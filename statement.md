@@ -1,19 +1,28 @@
-# Welcome!
-
-This C++ template lets you get started quickly with a simple one-page playground.
-
 ```C++ runnable
 #include <iostream>
+#include <type_traits>
 
-using namespace std;
-
-int main() 
+template<typename T>
+class Wrapper
 {
-    cout << "Hello, World!";
-    return 0;
+public:
+    Wrapper(T const& value) : value_(value) {}
+    
+    std::remove_reference_t<T> const& get() const { return value_; }
+    
+private:
+    T value_;
+};
+
+int main()
+{
+    using IntRefWrapper = Wrapper<int&>;
+    int a = 42;
+    IntRefWrapper intRefWrapper(a);
+    
+    intRefWrapper.get() = 43;
+
+    std::cout << "a is now " << a << '\n';
 }
 ```
 
-# Advanced usage
-
-If you want a more complex example (external libraries, viewers...), use the [Advanced C++ template](https://tech.io/select-repo/598)
